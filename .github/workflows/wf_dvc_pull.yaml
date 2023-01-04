@@ -11,15 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    - run: pip install dvc
-    - run: pip install -U "dvc[gdrive]"
-    - run: dvc remote add --default myremote gdrive://1D-JSK5SIKP7fpDr1s0P_4U0t830F6vg0
-    - run: dvc remote modify myremote gdrive_acknowledge_abuse true
-    - run: dvc remote modify myremote gdrive_client_id ${{ secrets.DVC_ID }}
-    - run: dvc remote modify myremote gdrive_client_secret ${{ secrets.DVC_SECRET }}
-    - run: dvc pull
+    - uses: iterative/setup-dvc@v1
 
-
+    - name: Get data
+      run: dvc pull
+      env:
+        GDRIVE_CREDENTIALS_DATA: $
